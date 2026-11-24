@@ -24,11 +24,14 @@ async def main() -> None:
     dp.include_router(admin.router)
     dp.include_router(start.router)
     dp.include_router(menu.router)
-    await bot.set_my_commands([
-        BotCommand(command="start", description="🛡 Boshlash"),
-        BotCommand(command="menu", description="📋 Menyu"),
-        BotCommand(command="panel", description="🛠 Admin panel"),
-    ])
+    try:
+        await bot.set_my_commands([
+            BotCommand(command="start", description="🛡 Boshlash"),
+            BotCommand(command="menu", description="📋 Menyu"),
+            BotCommand(command="panel", description="🛠 Admin panel"),
+        ])
+    except Exception as e:  # noqa: BLE001 - buyruqlar muhim emas, bot yiqilmasin
+        logging.warning("Buyruqlarni o'rnatib bo'lmadi: %s", e)
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
 
